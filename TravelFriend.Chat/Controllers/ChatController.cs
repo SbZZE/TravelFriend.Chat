@@ -11,6 +11,9 @@ namespace TravelFriend.Chat.Controllers
     [ApiController]
     public class ChatController : ControllerBase
     {
-        
+        [Route("login")]
+        public void Login([FromQuery] string userName)
+        {
+        }
     }
 }

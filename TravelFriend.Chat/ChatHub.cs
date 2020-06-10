@@ -8,25 +8,39 @@ namespace TravelFriend.Chat
 {
     public class ChatHub : Hub
     {
-        public async Task SendMessage()
+        //静态的用户列表
+        private static IList<string> UserList = new List<string>();
+        //用户的connectionId与用户名对照
+        private readonly static Dictionary<string, string> _connections = new Dictionary<string, string>();
+
+        /// <summary>
+        /// 用户登录聊天服务器
+        /// </summary>
+        /// <param name="userName"></param>
+        public async Task UserLogin(string userName)
         {
-            int count = 0;
-            string name = "sbzhangzhier";
-            while (true)
+            if (!UserList.Contains(userName))
             {
-                count++;
-                await Clients.User(name).SendAsync("ReceiveMessage", name, count);
-                await Task.Delay(1000);
+                UserList.Add(userName);
+                _connections.Add(userName, Context.ConnectionId);
             }
+            else
+            {
+                _connections[userName] = Context.ConnectionId;
+            }
+            await Clients.AllExcept(Context.ConnectionId).
+               SendAsync("GroupTip", $"{userName} 进入了群聊！");
         }
 
-        public async override Task OnConnectedAsync()
+        public async Task SignOut(string name)
         {
-            var a = Context.ConnectionId;
-            var b = Context.User;
-            var c = Context.UserIdentifier;
-            await SendMessage();
-            await base.OnConnectedAsync();
+            await Clients.AllExcept(Context.ConnectionId)
+                .SendAsync("online", $"{name} 离开了群聊！");
+        }
+
+        public async Task SendMessage(string user, string message)
+        {
+            await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
     }
 }
