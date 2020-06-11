@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TravelFriend.Chat.IRepository;
 using TravelFriend.Chat.Models;
+using TravelFriend.Chat.Repository;
 
 namespace TravelFriend.Chat
 {
@@ -15,6 +17,7 @@ namespace TravelFriend.Chat
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IChatRepository,ChatRepository>();
             services.AddDbContext<TravelFriendContext>();
             services.AddSignalR();
         }
