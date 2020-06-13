@@ -17,6 +17,8 @@ namespace TravelFriend.Chat.Models
 
         public virtual DbSet<AlbumImages> AlbumImages { get; set; }
         public virtual DbSet<TeamAlbum> TeamAlbum { get; set; }
+        public virtual DbSet<TeamMember> TeamMember { get; set; }
+        public virtual DbSet<Test> Test { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserAlbum> UserAlbum { get; set; }
         public virtual DbSet<UserTeam> UserTeam { get; set; }
@@ -133,6 +135,65 @@ namespace TravelFriend.Chat.Models
                     .HasColumnName("team_id")
                     .HasColumnType("char(255)")
                     .HasComment("相册所属团队id")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+            });
+
+            modelBuilder.Entity<TeamMember>(entity =>
+            {
+                entity.ToTable("team_member");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("char(255)")
+                    .HasComment("队员id")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Isleader)
+                    .HasColumnName("isleader")
+                    .HasColumnType("varchar(255)")
+                    .HasComment("是否为队长")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.MemberName)
+                    .HasColumnName("member_name")
+                    .HasColumnType("varchar(255)")
+                    .HasComment("队员姓名")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.MemberNickname)
+                    .HasColumnName("member_nickname")
+                    .HasColumnType("varchar(255)")
+                    .HasComment("队友昵称")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.TeamId)
+                    .HasColumnName("team_id")
+                    .HasColumnType("varchar(255)")
+                    .HasComment("队员所属团队的id")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+            });
+
+            modelBuilder.Entity<Test>(entity =>
+            {
+                entity.ToTable("test");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("char(255)")
+                    .HasComment("testID")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.TestString)
+                    .HasColumnName("testString")
+                    .HasColumnType("char(255)")
+                    .HasComment("testString")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
             });

@@ -8,6 +8,6 @@ namespace TravelFriend.Chat.IRepository
 {
     public interface IChatRepository
     {
-        Task<List<UserTeam>> GetTeamsByUserName(string userName);
+        Task<List<TeamMember>> GetTeamsByUserName(string userName);
     }
 }

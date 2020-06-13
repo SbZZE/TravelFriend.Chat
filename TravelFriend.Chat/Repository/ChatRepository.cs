@@ -17,9 +17,9 @@ namespace TravelFriend.Chat.Repository
             _context = context;
         }
 
-        public Task<List<UserTeam>> GetTeamsByUserName(string userName)
+        public Task<List<TeamMember>> GetTeamsByUserName(string userName)
         {
-            return _context.UserTeam.Where(x => x.User.Username == userName).ToListAsync();
+            return _context.TeamMember.Where(x => x.MemberName == userName).ToListAsync();
         }
     }
 }

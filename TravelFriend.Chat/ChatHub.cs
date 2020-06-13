@@ -34,9 +34,9 @@ namespace TravelFriend.Chat
             foreach (var team in teams)
             {
                 //将用户加入到每个他所在的群组通知中
-                await Groups.AddToGroupAsync(Context.ConnectionId, team.Id);
+                await Groups.AddToGroupAsync(Context.ConnectionId, team.TeamId);
                 //像用户所在的群组发登录通知
-                await Clients.Group(team.Id).SendAsync("Login", userName, team.Id);
+                await Clients.Group(team.Id).SendAsync("Login", userName, team.TeamId);
             }
         }
 
