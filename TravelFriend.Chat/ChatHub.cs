@@ -46,12 +46,12 @@ namespace TravelFriend.Chat
         /// <param name="message"></param>
         /// <param name="teamId"></param>
         /// <returns></returns>
-        public async Task SendMessage(string message, string teamId)
+        public async Task SendMessage(string teamId, string nickName, string sendTime, string content)
         {
             var userName = _connections.FirstOrDefault(x => x.Key == Context.ConnectionId).Value;
             if (userName != null)
             {
-                await Clients.Group(teamId).SendAsync("Received", message, teamId);
+                await Clients.Group(teamId).SendAsync("Received", teamId, userName, nickName, sendTime, content);
             }
         }
 
