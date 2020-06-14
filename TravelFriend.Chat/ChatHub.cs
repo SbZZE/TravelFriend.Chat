@@ -11,7 +11,7 @@ namespace TravelFriend.Chat
     {
         //用户的connectionId与用户名对照
         private readonly static Dictionary<string, string> _connections = new Dictionary<string, string>();
-        private readonly IChatRepository _chatRepository;
+        private readonly IChatRepository _chatRepository; 
 
         public ChatHub(IChatRepository chatRepository) : base()
         {
