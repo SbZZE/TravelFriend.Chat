@@ -27,7 +27,7 @@ namespace TravelFriend.Chat
         /// 用户登录聊天服务器
         /// </summary>
         /// <param name="userName"></param>
-        public async Task UserLogin(string userName)
+        public async Task UserLogin(string userName, string nickName)
         {
             _connections.Add(Context.ConnectionId, userName);
             var teams = await _chatRepository.GetTeamsByUserName(userName);
@@ -36,7 +36,7 @@ namespace TravelFriend.Chat
                 //将用户加入到每个他所在的群组通知中
                 await Groups.AddToGroupAsync(Context.ConnectionId, team.TeamId);
                 //像用户所在的群组发登录通知
-                await Clients.Group(team.Id).SendAsync("Login", userName, team.TeamId);
+                await Clients.GroupExcept(team.TeamId, Context.ConnectionId).SendAsync("Login", userName, nickName, team.TeamId);
             }
         }
 
@@ -58,7 +58,7 @@ namespace TravelFriend.Chat
         /// <summary>
         /// 用户退出聊天服务器
         /// </summary>
-        public async Task UserLogout()
+        public async Task UserLogout(string nickName)
         {
             var userName = _connections.FirstOrDefault(x => x.Key == Context.ConnectionId).Value;
             _connections.Remove(Context.ConnectionId);
@@ -66,9 +66,9 @@ namespace TravelFriend.Chat
             foreach (var team in teams)
             {
                 //将用户加入到每个他所在的群组通知中
-                await Groups.RemoveFromGroupAsync(Context.ConnectionId, team.Id);
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, team.TeamId);
                 //像用户所在的群组发登录通知
-                await Clients.Group(team.Id).SendAsync("Logout", userName, team.Id);
+                await Clients.GroupExcept(team.TeamId, Context.ConnectionId).SendAsync("Logout", userName, nickName, team.TeamId);
             }
         }
     }
